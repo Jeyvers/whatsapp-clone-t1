@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../css/SidebarChat.css';
 import { Avatar } from '@material-ui/core';
+import { addDoc, collection } from 'firebase/firestore';
+import db from '../firebase';
 
 const SidebarChat = ({ addNewChat, id, name }) => {
   const [seed, setSeed] = useState('');
+
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
   }, []);
@@ -11,6 +14,15 @@ const SidebarChat = ({ addNewChat, id, name }) => {
   const createChat = () => {
     const roomName = prompt('Please enter name for chat');
     if (roomName) {
+      // roomsCol.add({
+      //   name: roomName,
+      // });
+
+      addDoc(collection(db, 'rooms'), {
+        name: roomName,
+      });
+
+      console.log('Input:', roomName);
       // do some clever database stuff...
     }
   };

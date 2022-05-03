@@ -2,7 +2,7 @@
 import { initializeApp } from 'firebase/app';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore/lite';
+import { getFirestore } from 'firebase/firestore';
 // import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
 const firebaseConfig = {

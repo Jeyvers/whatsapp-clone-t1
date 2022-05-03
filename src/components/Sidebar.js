@@ -6,8 +6,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchOutlined from '@material-ui/icons/SearchOutlined';
 import SidebarChat from './SidebarChat';
-import { collection, getDocs } from 'firebase/firestore/lite';
-
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import db from '../firebase';
 
 const Sidebar = () => {
@@ -65,6 +64,7 @@ const Sidebar = () => {
       <div className='sidebar-chats'>
         <SidebarChat addNewChat />
         {rooms.map((room) => (
+          // In react, a key is used for performance.
           <SidebarChat key={room.id} id={room.id} name={room.data.name} />
         ))}
       </div>
