@@ -22,7 +22,21 @@ const Sidebar = () => {
     const roomsCol = collection(db, 'rooms');
     const roomsSnapshot = await getDocs(roomsCol);
 
-    onSnapshot(roomsCol, (colSnapshot) => {
+    const unsubscribe = onSnapshot(roomsCol, (colSnapshot) => {
+      const rooms = [];
+      colSnapshot.forEach((doc) => {
+        rooms.push({ id: doc.id, data: doc.data() });
+        console.log(rooms);
+      });
+      setRooms(rooms);
+    });
+  };
+
+  useEffect(() => {
+    console.log('I am running, fetching data');
+    const roomsCol = collection(db, 'rooms');
+
+    const unsubscribe = onSnapshot(roomsCol, (colSnapshot) => {
       const rooms = [];
       colSnapshot.forEach((doc) => {
         rooms.push({ id: doc.id, data: doc.data() });
@@ -31,27 +45,10 @@ const Sidebar = () => {
       setRooms(rooms);
     });
 
-    // setRooms(
-    //   onSnapshot(roomsCol, (colSnapshot) => {
-    //     colSnapshot.map((snapShot) => ({
-    //       id: doc.id,
-    //       data: doc.data(),
-    //     }));
-    //   })
-    // );
-
-    // setRooms(
-    //   roomsSnapshot.docs.map((doc) => ({
-    //     id: doc.id,
-    //     data: doc.data(),
-    //   }))
-    // );
-  };
-
-  useEffect(() => {
-    getRooms();
+    return () => {
+      unsubscribe();
+    };
   }, []);
-
   // useEffect(() => {
   //   db.collection('rooms').onSnapshot((snapshot) =>
   //     setRooms(
