@@ -6,11 +6,26 @@ import ChatIcon from '@material-ui/icons/Chat';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchOutlined from '@material-ui/icons/SearchOutlined';
 import SidebarChat from './SidebarChat';
+import { collection, getDocs } from 'firebase/firestore/lite';
 
 import db from '../firebase';
 
 const Sidebar = () => {
   const [rooms, setRooms] = useState([]);
+  useEffect(() => {
+    const roomsCol = collection(db, 'rooms');
+    const roomsSnapshot = getDocs(roomsCol);
+
+    roomsCol.onSnapshot((snapshot) =>
+      setRooms(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      )
+    );
+  }, []);
+
   useEffect(() => {
     db.collection('rooms').onSnapshot((snapshot) =>
       setRooms(
