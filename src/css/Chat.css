@@ -34,5 +34,61 @@
 }
 
 .chat-body {
-background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+    flex: 1;
+    background: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png') repeat center;
+    padding: 30px;
+    overflow: scroll;
+}
+
+
+.chat-message {
+    position:relative;
+    font-size: 16px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    width: fit-content;
+    margin-bottom: 10px;
+}
+
+.chat-receiver {
+    margin-left: auto;
+    background-color: #dcf8c6;
+}
+
+.chat-name {
+    position: absolute;
+    top: -15px;
+    font-size: xx-small;
+}
+
+.chat-timestamp {
+    margin-left: 10px;
+    font-size: xx-small;
+}
+
+.chat-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 62px;
+    border-top: 1px solid lightgray;
+}
+
+.chat-footer > form {
+    flex: 1;
+    display: flex;
+}
+
+.chat-footer > form > input {
+    flex: 1;
+    padding: 10px;
+    
+    border-radius: 30px;
+    border: none;
+}
+
+.chat-footer > .MuiSvgIcon-root {
+    padding: 10px;
+    color: gray;
 }
