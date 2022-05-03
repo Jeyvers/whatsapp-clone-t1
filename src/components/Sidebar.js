@@ -12,30 +12,34 @@ import db from '../firebase';
 
 const Sidebar = () => {
   const [rooms, setRooms] = useState([]);
-  useEffect(() => {
+  const getRooms = async () => {
+    console.log('I am running, fetching data');
     const roomsCol = collection(db, 'rooms');
-    const roomsSnapshot = getDocs(roomsCol);
+    const roomsSnapshot = await getDocs(roomsCol);
 
-    roomsCol.onSnapshot((snapshot) =>
-      setRooms(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-      )
+    setRooms(
+      roomsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        data: doc.data(),
+      }))
     );
-  }, []);
+  };
 
   useEffect(() => {
-    db.collection('rooms').onSnapshot((snapshot) =>
-      setRooms(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-      )
-    );
+    getRooms();
   }, []);
+
+  // useEffect(() => {
+  //   db.collection('rooms').onSnapshot((snapshot) =>
+  //     setRooms(
+  //       snapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         data: doc.data(),
+  //       }))
+  //     )
+  //   );
+  // }, []);
+
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
