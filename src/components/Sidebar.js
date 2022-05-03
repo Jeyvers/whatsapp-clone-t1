@@ -6,7 +6,13 @@ import ChatIcon from '@material-ui/icons/Chat';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchOutlined from '@material-ui/icons/SearchOutlined';
 import SidebarChat from './SidebarChat';
-import { collection, getDocs, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+} from 'firebase/firestore';
 import db from '../firebase';
 
 const Sidebar = () => {
@@ -16,12 +22,30 @@ const Sidebar = () => {
     const roomsCol = collection(db, 'rooms');
     const roomsSnapshot = await getDocs(roomsCol);
 
-    setRooms(
-      roomsSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        data: doc.data(),
-      }))
-    );
+    onSnapshot(roomsCol, (colSnapshot) => {
+      const rooms = [];
+      colSnapshot.forEach((doc) => {
+        rooms.push({ id: doc.id, data: doc.data() });
+        console.log(rooms);
+      });
+      setRooms(rooms);
+    });
+
+    // setRooms(
+    //   onSnapshot(roomsCol, (colSnapshot) => {
+    //     colSnapshot.map((snapShot) => ({
+    //       id: doc.id,
+    //       data: doc.data(),
+    //     }));
+    //   })
+    // );
+
+    // setRooms(
+    //   roomsSnapshot.docs.map((doc) => ({
+    //     id: doc.id,
+    //     data: doc.data(),
+    //   }))
+    // );
   };
 
   useEffect(() => {
