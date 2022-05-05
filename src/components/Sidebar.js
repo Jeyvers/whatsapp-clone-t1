@@ -6,17 +6,14 @@ import ChatIcon from '@material-ui/icons/Chat';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchOutlined from '@material-ui/icons/SearchOutlined';
 import SidebarChat from './SidebarChat';
-import {
-  collection,
-  doc,
-  getDocs,
-  onSnapshot,
-  query,
-} from 'firebase/firestore';
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import db from '../firebase';
+import { useStateValue } from '../StateProvider';
 
 const Sidebar = () => {
   const [rooms, setRooms] = useState([]);
+  const [{ user }, dispatch] = useStateValue();
+
   const getRooms = async () => {
     console.log('I am running, fetching data');
     const roomsCol = collection(db, 'rooms');
@@ -63,7 +60,8 @@ const Sidebar = () => {
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
-        <Avatar />
+        {/* Optional chaining */}
+        <Avatar src={user?.photoURL} />
         <div className='sidebar-header-right'>
           <IconButton>
             <DonutLargeIcon />
