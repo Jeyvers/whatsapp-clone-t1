@@ -27,6 +27,7 @@ const Chat = () => {
   const { roomId } = useParams();
   const [{ user }, dispatch] = useStateValue();
 
+  // In next video, these should be added to the main state
   const messagesCol = collection(db, 'rooms', roomId, 'messages');
   const messagesColQuery = query(messagesCol, orderBy('timestamp', 'asc'));
 
@@ -40,37 +41,7 @@ const Chat = () => {
         setRoomName(doc.data().name)
       );
 
-      // useEffect(() => {
-      //   console.log('I am running, fetching data');
-      //   const roomsCol = collection(db, 'rooms');
-
-      //   const unsubscribe = onSnapshot(roomsCol, (colSnapshot) => {
-      //     const rooms = [];
-      //     colSnapshot.forEach((doc) => {
-      //       rooms.push({ id: doc.id, data: doc.data() });
-      //       console.log(rooms);
-      //     });
-      //     setRooms(rooms);
-      //   });
-
-      //   return () => {
-      //     unsubscribe();
-      //   };
-      // }, []);
-
-      // db.collection('rooms')
-      //   .doc(roomId)
-      //   .collection('messages')
-      //   .orderBy('timestamp', 'asc')
-      //   .onSnapshot((snapshot) =>
-      //     setMessages(snapshot.docs.map((doc) => doc.data()))
-      //   );
-
-      //  onSnapshot(doc(db, 'rooms', roomId), (doc) =>
-      //    setRoomName(doc.data().name)
-      //  );
-
-      // Took me two days and lots of code and thinking to figure the code snippet below. I am so excited to have figured this code all by myself!!!!!!!
+      // Took me two days, lots of code, code comparison and thinking to figure the code snippet below. I am so excited to have figured this code all by myself!!!!!!!
       onSnapshot(messagesColQuery, (snapshot) => {
         const messagesInDoc = [];
         snapshot.forEach((doc) => {
@@ -79,25 +50,9 @@ const Chat = () => {
         });
         setMessages(messagesInDoc);
       });
-
-      // const messages = query(
-      //   collectionGroup(db, 'messagas'),
-      //   orderBy('timestamp', 'asc')
-      // );
-      // onSnapshot(messages, (snapshot) => {
-      //   console.log(snapshot.docs.map((doc) => console.log(doc.data)));
-      // });
-      // const messagesDocs = getDocs(getMessages);
     }
     setSeed(Math.floor(Math.random() * 5000));
   }, [roomId]);
-
-  const createChat = () => {
-    const roomName = prompt('Please enter name for chat');
-    if (roomName) {
-      // do some clever database stuff...
-    }
-  };
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -108,20 +63,6 @@ const Chat = () => {
       name: user.displayName,
       timestamp: serverTimestamp(),
     });
-
-    // db.collection('rooms').doc(roomId).collection('messages').add({
-    //   message: input,
-    //   name: user.displayName,
-    //   // timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    // });
-
-    // roomsCol.add({
-    //   name: roomName,
-    // });
-
-    // addDoc(collection(db, 'rooms'), {
-    //   name: roomName,
-    // });
 
     setInput('');
   };
@@ -178,7 +119,6 @@ const Chat = () => {
             type='text'
             placeholder='Type a message'
           />
-          {/* <button>Send a message</button> */}
         </form>
         <Mic />
       </div>

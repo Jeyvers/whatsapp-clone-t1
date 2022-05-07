@@ -14,23 +14,8 @@ const Sidebar = () => {
   const [rooms, setRooms] = useState([]);
   const [{ user }, dispatch] = useStateValue();
 
-  const getRooms = async () => {
-    console.log('I am running, fetching data');
-    const roomsCol = collection(db, 'rooms');
-    const roomsSnapshot = await getDocs(roomsCol);
-
-    const unsubscribe = onSnapshot(roomsCol, (colSnapshot) => {
-      const rooms = [];
-      colSnapshot.forEach((doc) => {
-        rooms.push({ id: doc.id, data: doc.data() });
-        console.log(rooms);
-      });
-      setRooms(rooms);
-    });
-  };
-
   useEffect(() => {
-    console.log('I am running, fetching data');
+    // Fetches rooms from firestore and displays them on the sidebar
     const roomsCol = collection(db, 'rooms');
 
     const unsubscribe = onSnapshot(roomsCol, (colSnapshot) => {
@@ -46,17 +31,6 @@ const Sidebar = () => {
       unsubscribe();
     };
   }, []);
-
-  // useEffect(() => {
-  //   db.collection('rooms').onSnapshot((snapshot) =>
-  //     setRooms(
-  //       snapshot.docs.map((doc) => ({
-  //         id: doc.id,
-  //         data: doc.data(),
-  //       }))
-  //     )
-  //   );
-  // }, []);
 
   return (
     <div className='sidebar'>
@@ -81,6 +55,7 @@ const Sidebar = () => {
           <input type='text' placeholder='Search or start new chat' />
         </div>
       </div>
+
       <div className='sidebar-chats'>
         <SidebarChat addNewChat />
         {rooms.map((room) => (

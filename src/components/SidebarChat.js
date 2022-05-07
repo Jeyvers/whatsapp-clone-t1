@@ -16,6 +16,7 @@ const SidebarChat = ({ addNewChat, id, name }) => {
   const [messages, setMessages] = useState('');
 
   useEffect(() => {
+    // Gets last message from firestore and displays it under the name in sidebar chat.
     if (id) {
       const messagesCol = collection(db, 'rooms', id, 'messages');
       const messagesColQuery = query(messagesCol, orderBy('timestamp', 'desc'));
@@ -24,12 +25,12 @@ const SidebarChat = ({ addNewChat, id, name }) => {
         const messagesInDoc = [];
         snapshot.forEach((doc) => {
           messagesInDoc.push(doc.data());
-          console.log('Current data:', doc.data());
         });
         setMessages(messagesInDoc);
       });
     }
   }, [id]);
+
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
   }, []);
@@ -37,16 +38,9 @@ const SidebarChat = ({ addNewChat, id, name }) => {
   const createChat = () => {
     const roomName = prompt('Please enter name for chat');
     if (roomName) {
-      // roomsCol.add({
-      //   name: roomName,
-      // });
-
       addDoc(collection(db, 'rooms'), {
         name: roomName,
       });
-
-      console.log('Input:', roomName);
-      // do some clever database stuff...
     }
   };
 
@@ -56,6 +50,7 @@ const SidebarChat = ({ addNewChat, id, name }) => {
         <Avatar src={`https://avatars.dicebear.com/api/human/:${seed}.svg`} />
         <div className='sidebar-chat-info'>
           <h2>{name}</h2>
+          {/* messages array is ordered by ascending, therefore, the last message will the first message - messages[0] */}
           <p>{messages[0]?.message}</p>
         </div>
       </div>
