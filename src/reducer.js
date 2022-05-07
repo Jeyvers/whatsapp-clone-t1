@@ -1,5 +1,6 @@
 export const initialState = {
-  user: 'null',
+  user: null,
+  // code was changed from a js keyword to a string - why user login is not required
 };
 
 export const actionTypes = { SET_USER: 'SET_USER' };

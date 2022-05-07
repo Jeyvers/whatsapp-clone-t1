@@ -46,6 +46,7 @@ const Sidebar = () => {
       unsubscribe();
     };
   }, []);
+
   // useEffect(() => {
   //   db.collection('rooms').onSnapshot((snapshot) =>
   //     setRooms(
